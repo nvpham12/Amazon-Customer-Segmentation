@@ -19,9 +19,9 @@ Segment customers based on engagement and spending behavior to prioritize retent
 - A small number of customers drive a disproportionate share of total monetary value.
 
 ## Recommendations
-- Prioritize retention spend on “Can’t Lose Them” customers, using personalized promotions or Prime trials, as this segment delivers the highest revenue per customer.
-- Deploy targeted win-back campaigns for “About to Sleep” customers, such as time-limited discounts or product recommendations based on prior purchase categories.
-- Limit retention investment in “Needs Attention” and “At Risk” segments, where low average and total spend suggest lower return on retention cost.
+- Prioritize retention spend on **Can’t Lose Them** customers, using personalized promotions or Prime trials, as this segment delivers the highest revenue per customer.
+- Deploy targeted win-back campaigns for **About to Sleep** customers, such as time-limited discounts or product recommendations based on prior purchase categories.
+- Limit retention investment in **Needs Attention** and **At Risk** segments, where low average and total spend suggest lower return on retention cost.
 - Use RFM segments to personalize homepage recommendations, testing whether segment-aware personalization improves repeat engagement and spending.
 
 ## Proposed Success Metrics
