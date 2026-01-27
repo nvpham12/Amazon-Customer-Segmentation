@@ -30,6 +30,11 @@ Segment customers based on engagement and spending behavior to prioritize retent
 - Campaign response rate by segment
 - Repeat purchase frequency
 
+## Limitations
+- Reviews may not reflect actual purchase timing or amounts.  
+- Only a subset of engaged, verified customers are included.  
+- Recency, frequency, and monetary metrics use proxies (review dates and prices) rather than exact purchase data.  
+
 ---
 
 # Links
