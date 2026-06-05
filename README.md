@@ -37,20 +37,28 @@ Segment customers based on engagement and spending behavior to prioritize retent
 
 ---
 
+# Approach
+- An ETL process is used to obtain the data from the Hugging Face Repository, transform it to parquet file type, and load it into PySpark.
+- Exploratory Data Analysis and cleaning are done through querying within PySpark.
+- K-Means clustering and RFM Analysis are applied for customer segmentation.
+- Customer segments and data distributions are visualized and analyzed.
+
+---
+
 # Links
 ## EDA Jupyter Notebook
-- [EDA Notebook](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/EDA%20Amazon%20Electronics%20Big%20Data.ipynb)
+- [EDA Notebook](./EDA.ipynb)
 
 ## K-Means Clustering
-- [K-Means Clustering Notebook](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/K-Means%20Clustering%20Notebook.ipynb)
-- [K-Means Clustering Technical Report](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/K-Means%20Clustering%20Technical%20Report.md)
+- [K-Means Clustering Notebook](./K-Means%20Clustering.ipynb)
+- [K-Means Clustering Technical Report](./K-Means%20Clustering%20Technical%20Report.md)
 
 ## RFM Customer Segmentation
-- [RFM Segmentation Notebook](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/RFM%20Segmentation%20Amazon%20Electronics.ipynb)
-- [RFM Segmentation Technical Report](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/RFM%20Segmentation%20Technical%20Report.md)
+- [RFM Segmentation Notebook](./RFM%20Segmentation.ipynb)
+- [RFM Segmentation Technical Report](./RFM%20Segmentation%20Technical%20Report.md)
 
 ## Data Analytics
-- [Data Analytics Report](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/Data%20Analytics%20Report.md)
+- [Data Analytics Report](./Data%20Analytics%20Report.md)
 
 ---
 
@@ -58,14 +66,6 @@ Segment customers based on engagement and spending behavior to prioritize retent
 - Python (PySpark, SparkSQL, Pandas)
 - MLlib
 - Matplotlib/Seaborn
-
----
-
-# Approach
-- Ingested and transformed large-scale review and product data using PySpark
-- Performed exploratory analysis to understand customer spending and engagement patterns
-- Applied RFM analysis and clustering techniques to segment customers
-- Analyzed segment behavior to derive retention and marketing insights
 
 ---
 

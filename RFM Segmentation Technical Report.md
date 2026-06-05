@@ -1,37 +1,39 @@
+# Table of Contents
+- [Project Background](#project-background)
+- [Data Cleaning](#data-cleaning)
+- [RFM Customer Segmentation](#rfm-customer-segmentation)
+- [Visualization and Analysis](#visualization-and-analysis)
+- [Appendix](#appendix)
+
+---
+
 # Project Background
 This project demonstrates customer segmentation using Recency, Frequency, and Monetary (RFM) features. The data will be filtered down to only users who left reviews with verified purchases in 2022-2023, the most recently available time period in the data. 
 
-## Links
-### EDA Jupyter Notebook
-- [EDA Notebook](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/EDA%20Amazon%20Electronics%20Big%20Data.ipynb)
+## Project Limitations
+- **Volunteer bias**: Not all customers leave reviews; analysis reflects only engaged, reviewing customers.
+- **Frequency calculation**: Does not account for multiple quantities per purchase.
+- **Subset of reviewers**: Reviews are left by users and those who haven't made a verified purchase may not have bought the item being reviewed.
+    - **Mitigation** Only verified reviewers are included, ensuring that only verified customers are selected from users. Analysis focuses on this engaged subset.
+- **Review timing**: Reviews aren’t necessarily left at the time of purchase.
+    - **Mitigation**: Used review dates from verified customers as a proxy for purchase dates to compute recency.
+- **Monetary value estimation**: Prices of reviewed products may not reflect actual amounts paid due to discounts or price changes.
+    - **Mitigation**: Used product prices at the time of scraping as a proxy for spending.
+- **Missing purchase info**: Data lacks actual purchase amounts and dates.
+    - **Mitigation**: Review dates and product prices serve as proxies to approximate recency, frequency, and monetary features for RFM analysis.
 
-### K-Means Clustering
-- [K-Means Clustering Notebook](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/K-Means%20Clustering%20Notebook.ipynb)
-- [K-Means Clustering Technical Report](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/K-Means%20Clustering%20Technical%20Report.md)
+---
 
-### RFM Customer Segmentation
-- [RFM Segmentation Notebook](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/RFM%20Segmentation%20Amazon%20Electronics.ipynb)
+# Data Cleaning
+- Converted missing value strings such as 'none' and 'n/a' into null values.
+- Dropped duplicates.
+- Filtered data to last 2 years of observations (2022 and 2023) and only reviews with verified purchases.
+- Removed incorrect observations and unnecessary columns.
+- Converted data types to proper format such as timestamp to seconds and price to double type (a type of integer in PySpark).
 
-### Data Analytics
-- [Data Analytics Report](https://github.com/nvpham12/Amazon-Big-Data-Customer-Segmentation/blob/main/Data%20Analytics%20Report.md)
+--- 
 
-## Tools & Technologies
-- **PySpark**: distributed computing and big data manipulation
-- **Spark SQL**: SQL style querying within PySpark framework
-- **MLlib**: K-Means clustering and unsupervised learning
-- **Pandas**: data manipulation and extracting samples from PySpark dataframe for visualization
-- **Matplotlib and Seaborn**: data visualization
-
-## Approach
-- An ETL process is used to obtain the data from the Hugging Face Repository, transform it to parquet file type, and load it into PySpark.
-- Exploratory Data Analysis and cleaning are done through querying within PySpark.
-- K-Means clustering and RFM Analysis are applied for customer segmentation.
-- Customer segments and data distributions are visualized and analyzed.
-
-## Data
-- The data consists of Amazon product user reviews and item metadata between May 1996 to September 2023.
-- The reviews dataset contains 43,886,944 rows and 10 columns.
-- The product metadata contains 1,610,012 rows and 16 columns.
+# RFM Customer Segmentation
 
 ## RFM Features
 Recency, Frequency, and Monetary (RFM) analysis is a method commonly used in marketing and analytics to segment or analyze customers. RFM will be computed as features and used for customer segmentation in this project.
@@ -50,46 +52,6 @@ The RFM features will represent the following in this project:
 
 - **Monetary**: how much a customer spends based on prices of the product they reviewed.
 
-## Project Limitations
-- **Volunteer bias**: Not all customers leave reviews; analysis reflects only engaged, reviewing customers.
-- **Frequency calculation**: Does not account for multiple quantities per purchase.
-- **Subset of reviewers**: Reviews are left by users and those who haven't made a verified purchase may not have bought the item being reviewed.
-    - **Mitigation** Only verified reviewers are included, ensuring that only verified customers are selected from users. Analysis focuses on this engaged subset.
-- **Review timing**: Reviews aren’t necessarily left at the time of purchase.
-    - **Mitigation**: Used review dates from verified customers as a proxy for purchase dates to compute recency.
-- **Monetary value estimation**: Prices of reviewed products may not reflect actual amounts paid due to discounts or price changes.
-    - **Mitigation**: Used product prices at the time of scraping as a proxy for spending.
-- **Missing purchase info**: Data lacks actual purchase amounts and dates.
-    - **Mitigation**: Review dates and product prices serve as proxies to approximate recency, frequency, and monetary features for RFM analysis.
-
----
-
-# Exploratory Data Analysis (EDA)
-## Popular Products
-![2023_popular_products](https://github.com/user-attachments/assets/2c738685-86dd-4cf9-9e15-a9a735bede04)
-> Product popularity is approximated using the number of user reviews as a proxy.
-- Small electronic devices were the most popular in 2023. Wireless audio devices (earbuds/headphones) were by far the most popular.
-- Other popular electronics in 2023 were flash drives and various home improvement products such as cameras and Echo Dots.
-
----
-
-## Rating Distribution
-![rating_distribution](https://github.com/user-attachments/assets/a686da60-1d6a-4fb6-999b-7f49dfa784f8)
-- Most product reviews come from users with verified purchases. This was unexpected given that there is no cost requirement (and therefore, a barrier) for users to make reviews without a verified purchases. 
-- Users have a tendency to leave ratings at the extreme values (1 and 5).
-- Most reviews are 5 star reviews, indicating that users tend to leave a review when they are satisfied with a product.
-
----
-
-## Data Cleaning
-- Converted missing value strings such as 'none' and 'n/a' into null values.
-- Dropped duplicates.
-- Filtered data to last 2 years of observations (2022 and 2023) and only reviews with verified purchases.
-- Removed incorrect observations and unnecessary columns.
-- Converted data types to proper format such as timestamp to seconds and price to double type (a type of integer in PySpark).
-
---- 
-# Customer Segmentation
 ## Data Preprocessing
 - The data is filtered further to a 1 year range between 9/13/2022 to 9/13/2023 based on the date of the most recent review in the data.
 - Applied a log transformation on skewed features.
@@ -99,8 +61,8 @@ The RFM features will represent the following in this project:
 - RFM Scores are computed using window functions to rank customers for each metric.
 - The invididual scores for Recency, Frequency, and Monetary are then concatenated into a single combined RFM score that summarizes each customer's behavior. For example, if a customer had a recency of 1, frequency of 2, and monetary of 3, their RFM score would be 123.
 
-## Segmentation
-The customers are segmented to the following groups:
+## Mapping
+The customers are mapped to the following groups based on their combined RFM scores:
 - **Champions**: These are the best customers, with the most recent and frequent purchases and with the most dollar spendings.
 - **Loyal Customers**: Customers who have made some less recent purchases and spend a little less than champions. But these customers have still made very recent and frequent purchases with sizeable spendings.
 - **Potential Loyalists**: Customers who made recent purchases, but spent moderate amounts with moderate frequncy.
@@ -115,10 +77,9 @@ The customers are segmented to the following groups:
 
 ---
 
-# Visualization
+# Visualization and Analysis
 ## RFM Segment Counts
-<img width="1000" height="600" alt="rfm_segment_count" src="https://github.com/user-attachments/assets/c1e6f055-0cb3-4799-af52-3aae7a9db69c" />
-
+![RFM Customer Segment Distribution](<Visuals/RFM%20Customer%20Counts.png>)
 
 - The segments with the most customers are the **About to Sleep** and **Hibernating** segments, which is bad since these customers are at risk of churn or have churned already. About to Sleep customers haven't churned yet though and may be retained through business strategy.
 - The segments with the fewest customers are the **Can't Lose Them** and **At Risk** segments. This is good since a business would want those segments to be least populated.
@@ -127,7 +88,7 @@ The customers are segmented to the following groups:
 ---
 
 ## RFM Segment Pie
-<img width="1000" height="600" alt="rfm_segment_pie" src="https://github.com/user-attachments/assets/5842a65a-881e-4dbd-b9ff-9e3f8817ed5d" />
+![RFM Segments](<Visuals/RFM%20Segments.png>)
 
 - 36% of customers are regular or high value customers (**Champions**, **Loyalists**, and **Potential Loyalists**)
 - 33% of customers are at risk of churn but haven't churned yet (**About to Sleep**, **At Risk**, **Can't Lose Them**, and **Needs Attention**).
@@ -136,7 +97,7 @@ The customers are segmented to the following groups:
 ---
 
 ## Average Monetary Value by Segment
-<img width="1000" height="600" alt="avg_monetary_by_segment" src="https://github.com/user-attachments/assets/075bdf02-53bf-4dbd-9e75-5e205dbc48c2" />
+![Average Monetary Value](<Visuals/Average%20Monetary%20Value.png>)
 
 - Based on average Monetary value, customers in the **Can't Lose Them** and **About to Sleep** categories are high value customers that should be targeted for retention.
 - **Hibernating**, **Needs Attention**, and **At Risk** customers have the lowest average Monetary value.
@@ -144,34 +105,46 @@ The customers are segmented to the following groups:
 ---
 
 ## Total Monetary Value by Segment
-<img width="1000" height="600" alt="total_monetary_by_segment" src="https://github.com/user-attachments/assets/6cea748a-5386-459c-acaa-ca8a4c5bab33" />
-
+![Total Monetary Value](<Visuals/Total%20Monetary%20Value.png>)
 - Based on total Monetary value, customers in the **Champions** and **About to Sleep** segments contain the highest value customers.
 - **Hibernating**, **Needs Attention**, and **At Risk** customers have the lowest total Monetary value.
 - **Can't Lose Them** customers are notable since they have the highest average monetary value but lower total monetary value. This could mean that these customers have few members in the segment, but have high spending per member. This segment has very high value and measures should be taken to retain them.
 
 ---
 
-# Executive Summary
-## Insights
-- **Can't Lose Them** customers should be prioritized since they have on average, high levels of spending per capita.
-- **About to Sleep** customers have good spending per capita and are the second most important group among customers at risk of churning.
-- **Needs Attention** and **At Risk** customers are customers at risk of churning. However, they have low levels of spending.
-- 36% of customers are regular or high value customers (**Champions**, **Loyalists**, and **Potential Loyalists**)
-- 33% of customers are at risk of churn but haven't churned yet (**About to Sleep**, **At Risk**, **Can't Lose Them**, and **Needs Attention**).
-- 30% of customers have already churned (**Lost** and **Hibernating**).
-- Small electronic devices were the most popular in 2023. Wireless audio devices (earbuds/headphones) were by far the most popular.
-- Ratings tend to extremes, especially towards 5 star reviews.
+# Appendix
+<details>
+<summary><b>
+Click to see links, tools used, and data source.
+</b></summary>
+<br></br>
 
-## Recommendations
-- Customers in the **About to Sleep** and **Can't Lose Them** segments should be targeted with discounts and promotions. This could be done by showing discounted products in their product recommendations (on the front page) or offering these customers a 1-month trial of Amazon Prime.
-- Customers categorized as **Can't Lose Them** should be focused on, since they are at risk of churning and have high levels of spending.
-- Customers in the **Needs Attention** and **At Risk** segments require more careful consideration. They are at risk of churning, but have low average and total spending. The benefits of retaining them may not be worth the costs of doing so.
-- Marketing campaigns should be launched to find **New Customers** and reach **Hibernating** and **Lost** customers in an attempt to rekindle interest and get them to return.
-- Consider rewarding **Champions**, **Loyal Customers**, and **Potential Loyalists** for being good customers. Consider offering exclusive perks, discounts, or coupons to these customers. Or create some loyalty program based on spending, which may encourage more purchases from them.
-- Consider developing Amazon branded audio devices like earbuds and speakers. Continue development of Fire and Echo products.
-- Investigate 5 star reviews for any fake reviews.
----
+
+# Links
+## EDA Jupyter Notebook
+- [EDA Notebook](EDA.ipynb)
+
+## K-Means Clustering
+- [K-Means Clustering Notebook](./K-Means%20Clustering.ipynb)
+- [K-Means Clustering Technical Report](./K-Means%20Clustering%20Technical%20Report.md)
+
+## RFM Customer Segmentation
+- [RFM Segmentation Notebook](./RFM%20Segmentation.ipynb)
+
+## Data Analytics
+- [Data Analytics Report](./Data%20Analytics%20Report.md)
+
+# Tools & Technologies
+- **PySpark**: distributed computing and big data manipulation
+- **Spark SQL**: SQL style querying within PySpark framework
+- **MLlib**: K-Means clustering and unsupervised learning
+- **Pandas**: data manipulation and extracting samples from PySpark dataframe for visualization
+- **Matplotlib and Seaborn**: data visualization
+
+# Data
+- The data consists of Amazon product user reviews and item metadata between May 1996 to September 2023.
+- The reviews dataset contains 43,886,944 rows and 10 columns.
+- The product metadata contains 1,610,012 rows and 16 columns.
 
 # Data Source
 Dataset: Amazon Reviews 2023
@@ -181,3 +154,4 @@ Authors: McAuley Lab at University of California, San Diego
 Source: [Hugging Face Repository](https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023)
 
 Reference: Hou, Y., Li, J., He, Z., Yan, A., Chen, X., & McAuley, J. (2024). Bridging language and items for retrieval and recommendation. arXiv preprint arXiv:2403.03952. https://arxiv.org/abs/2403.03952
+</details>
